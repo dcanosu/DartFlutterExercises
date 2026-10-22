@@ -1,12 +1,19 @@
 import "exercises/exercise_base.dart";
 import "exercises/positive_power.dart";
-import "exercises/average_of_four.dart";
-import "exercises/circle_perimeter.dart";
 import "exercises/double_triple.dart";
 import "exercises/root_square.dart";
+import "exercises/circle_perimeter.dart";
 import "exercises/midweek_day.dart";
 import "exercises/tax_calculator.dart";
 import "exercises/remainder_finder.dart";
+import "exercises/sum_evens.dart";
+import "exercises/fraction_difference.dart";
+import "exercises/string_length.dart";
+import "exercises/average_of_four.dart";
+import "exercises/smallest_five.dart";
+import "exercises/vowel_counter.dart";
+import "exercises/factorial_finder.dart";
+import "exercises/inrange_validator.dart";
 
 class ExerciseItem {
   final String title;
@@ -73,6 +80,30 @@ final List<ExerciseItem> allExercises = [
       inputs.length > 1 ? inputs[1].toInt() : 0,
     ),
   ),
+  
+  ExerciseItem(
+    title: "Sum of Evens",
+    description: "Calculates the sum of even numbers from 1 to 50.",
+    inputLabels: [],
+    builder: (inputs) => SumOfEvens(),
+  ),
+  ExerciseItem(
+    title: "Fraction Difference",
+    description: "Calculates the difference between two fractions.",
+    inputLabels: ["Numerator 1:", "Denominator 1:", "Numerator 2:", "Denominator 2:"],
+    builder: (inputs) => FractionDifference(
+      inputs.length > 0 ? inputs[0] : 0,
+      inputs.length > 1 ? inputs[1] : 1,
+      inputs.length > 2 ? inputs[2] : 0,
+      inputs.length > 3 ? inputs[3] : 1,
+    ),
+  ),
+  ExerciseItem(
+    title: "String Length",
+    description: "Calculates the length of a given string.",
+    inputLabels: ["Enter a string:"],
+    builder: (inputs) => StringLength(inputs.isNotEmpty ? inputs[0].toString() : ""),
+  ),
   ExerciseItem(
     title: "Average of Four",
     description: "Calculates the average of four numbers.",
@@ -84,4 +115,28 @@ final List<ExerciseItem> allExercises = [
       inputs.length > 3 ? inputs[3] : 0,
     ),
   ),
+  ExerciseItem(
+    title: "Smallest of Five",
+    description: "Finds the smallest number among five numbers.",
+    inputLabels: ["Number 1:", "Number 2:", "Number 3:", "Number 4:", "Number 5:"],
+    builder: (inputs) => SmallestOfFive(inputs),
+    ),
+  ExerciseItem(
+    title: "Vowel Counter",
+    description: "Counts the number of vowels in a given word.",
+    inputLabels: ["Enter a word:"],
+    builder: (inputs) => VowelCounter(inputs.isNotEmpty ? inputs[0].toString() : ""),
+  ),
+  ExerciseItem(
+    title: "Factorial Finder",
+    description: "Calculates the factorial of a given number.",
+    inputLabels: ["Enter a number:"],
+    builder: (inputs) => FactorialFinder(inputs.isNotEmpty ? inputs[0].toInt() : 0),
+  ),  ExerciseItem(
+    title: "In-Range Validator",
+    description: "Checks if a number is within a specified range.",
+    inputLabels: ["Enter a number:", "Enter the minimum value:", "Enter the maximum value:"],
+    builder: (inputs) => InRangeValidator(
+    inputs.length > 0 ? inputs[0].toInt() : 0,
+    )),
 ];
