@@ -1,7 +1,7 @@
 import "exercise_base.dart";
 
 class PositivePower implements Exercise {
-  final double number;
+  final int number;
 
   PositivePower(this.number);
 

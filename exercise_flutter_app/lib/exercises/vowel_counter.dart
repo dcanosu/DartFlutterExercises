@@ -12,12 +12,10 @@ class VowelCounter implements Exercise {
   String execute() {
     int count = 0;
     String lowerWord = word.toLowerCase();
+
+    const vowels = "aeiou";
     for (int i = 0; i < lowerWord.length; i++) {
-      if (lowerWord[i] == 'a' ||
-          lowerWord[i] == 'e' ||
-          lowerWord[i] == 'i' ||
-          lowerWord[i] == 'o' ||
-          lowerWord[i] == 'u') {
+      if (vowels.contains(lowerWord[i])) {
         count++;
       }
     }

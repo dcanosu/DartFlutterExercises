@@ -3,7 +3,7 @@ import "dart:math";
 import "exercise_base.dart";
 
 class RootOrSquare implements Exercise {
-  final double number;
+  final int number;
 
   RootOrSquare(this.number);
 

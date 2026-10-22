@@ -1,7 +1,7 @@
 import "exercise_base.dart";
 
 class TaxCalculator implements Exercise {
-  final double salary;
+  final int salary;
 
   TaxCalculator(this.salary);
 

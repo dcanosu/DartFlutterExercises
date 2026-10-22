@@ -1,7 +1,7 @@
 import "exercise_base.dart";
 
 class SmallestOfFive implements Exercise {
-  final List<double> numbers;
+  final List<int> numbers;
 
   SmallestOfFive(this.numbers);
 
@@ -14,7 +14,7 @@ class SmallestOfFive implements Exercise {
       return "Result: No numbers provided.";
     }
 
-    double smallest = numbers[0];
+    int smallest = numbers[0];
 
     for (var number in numbers) {
       if (number < smallest) {

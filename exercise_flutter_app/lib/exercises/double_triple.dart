@@ -1,8 +1,8 @@
 import "exercise_base.dart";
 
 class DoubleOrTriple implements Exercise {
-  final double num1;
-  final double num2;
+  final int num1;
+  final int num2;
 
   DoubleOrTriple(this.num1, this.num2);
 
