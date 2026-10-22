@@ -6,35 +6,50 @@ class ExerciseDetailScreen extends StatefulWidget {
   final ExerciseItem exerciseItem;
 
   const ExerciseDetailScreen({super.key, required this.exerciseItem});
+
   @override
   State<ExerciseDetailScreen> createState() => _ExerciseDetailScreenState();
 }
 
 class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
-  final TextEditingController _controller = TextEditingController();
+  late final List<TextEditingController> _controllers;
   String _result = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _controllers = List.generate(
+      widget.exerciseItem.inputLabels.length,
+      (_) => TextEditingController(),
+    );
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   void _run() {
     setState(() {
-      final text = _controller.text;
-      final parts = text.split(RegExp(r'[\s,]+'));
-
       List<double> inputs = [];
-      for (var part in parts) {
-        if (part.isNotEmpty) {
-          final val = double.tryParse(part);
-          if (val != null) {
-            inputs.add(val);
-          }
+
+      for (var controller in _controllers) {
+        final text = double.tryParse(controller.text);
+        if (text != null) {
+          inputs.add(text);
+        } else {
+          inputs.add(0.0);
         }
       }
 
       try {
         final exercise = widget.exerciseItem.builder(inputs);
-
         _result = exercise.execute();
       } catch (e) {
-        _result = "Result: Error en los datos de entrada.";
+        _result = "Result: Error executing the exercise: ${e.toString()}";
       }
     });
   }
@@ -48,23 +63,36 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              "Ingrese el valor o los valores separados por espacios o comas\n(Ej: para promediar 4 números escribe: 10, 20, 30, 40):",
-              style: TextStyle(fontSize: 14, color: Colors.grey),
+            Text(
+              widget.exerciseItem.description,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _controller,
-              keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Valores de entrada',
+            const SizedBox(height: 15),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.exerciseItem.inputLabels.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: TextField(
+                      controller: _controllers[index],
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: widget.exerciseItem.inputLabels[index],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _run,
-              child: const Text('Calcular Resultado'),
+              child: const Text('Evaluate result'),
             ),
             const SizedBox(height: 30),
             Text(
