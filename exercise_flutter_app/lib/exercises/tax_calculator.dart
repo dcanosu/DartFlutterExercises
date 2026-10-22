@@ -11,7 +11,7 @@ class TaxCalculator implements Exercise {
   @override
   String execute() {
     if (salary > 12000) {
-      double tax = (salary - 12000) * 0.15;
+      int tax = ((salary - 12000) * 15) ~/ 100;
       return "Result: $tax";
     } else {
       return "Result: No tax to pay.";

@@ -24,6 +24,38 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
     );
   }
 
+  double _parseValidDouble(String value, {bool positiveOnly = false}) {
+    final parsed = double.tryParse(value);
+    if (parsed == null || (positiveOnly && parsed <= 0)) {
+      throw FormatException(
+        "Please enter a valid ${positiveOnly ? 'positive ' : ''}number.",
+      );
+    }
+    return parsed;
+  }
+
+  int _parseValidInt(String value, {bool positiveOnly = false}) {
+    final parsed = int.tryParse(value);
+    if (parsed == null || (positiveOnly && parsed <= 0)) {
+      throw FormatException(
+        "Please enter a valid ${positiveOnly ? 'positive ' : ''}integer.",
+      );
+    }
+    return parsed;
+  }
+
+  String _parseValidString(String value) {
+    if (value.trim().isEmpty) {
+      throw FormatException("Input cannot be empty.");
+    }
+    if (double.tryParse(value) != null) {
+      throw FormatException(
+        "Input cannot be a number. Please enter a valid word.",
+      );
+    }
+    return value;
+  }
+
   @override
   void dispose() {
     for (var controller in _controllers) {
@@ -34,22 +66,40 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
   void _run() {
     setState(() {
-      List<double> inputs = [];
-
-      for (var controller in _controllers) {
-        final text = double.tryParse(controller.text);
-        if (text != null) {
-          inputs.add(text);
-        } else {
-          inputs.add(0.0);
-        }
-      }
-
       try {
+      List<String> inputs = _controllers
+          .map((controller) => controller.text)
+          .toList();
+
+      String title = widget.exerciseItem.title;
+
+      if (title == "Positive Power" || title == "Root or Square" || title == "Tax Calculator") {
+          _parseValidDouble(inputs[0]);
+        } else if (title == "Circle Perimeter") {
+          _parseValidDouble(inputs[0], positiveOnly: true);
+        } else if (title == "Midweek Day" || title == "Factorial Finder" || title == "In-Range Validator") {
+          _parseValidInt(inputs[0], positiveOnly: true);
+        } else if (title == "Double or Triple" || title == "Remainder Finder" || title == "Average of Four") {
+          for (var input in inputs) {
+            _parseValidDouble(input);
+          }
+        } else if (title == "Smallest of Five") {
+          for (var input in inputs) {
+            _parseValidInt(input);
+          }
+        } else if (title == "String Length" || title == "Vowel Counter") {
+          _parseValidString(inputs[0]);
+        } else if (title == "Fraction Difference") {
+          for (var input in inputs) {
+            _parseValidDouble(input);
+          }
+        }
+
         final exercise = widget.exerciseItem.builder(inputs);
         _result = exercise.execute();
+        
       } catch (e) {
-        _result = "Result: Error executing the exercise: ${e.toString()}";
+        _result = "Result: ${e.toString().replaceAll("FormatException: ", "")}";
       }
     });
   }
@@ -77,9 +127,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: TextField(
                       controller: _controllers[index],
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         labelText: widget.exerciseItem.inputLabels[index],

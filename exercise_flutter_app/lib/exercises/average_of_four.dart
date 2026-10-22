@@ -14,6 +14,12 @@ class AverageOfFour implements Exercise {
   @override
   String execute() {
     int sum = num1 + num2 + num3 + num4;
-    return "Result: ${sum / 4.0}";
+    if (sum % 4 == 0) {
+      int average = sum ~/ 4;
+      return "Result: $average";
+    } else {
+      double average = sum / 4.0;
+      return "Result: $average";
+    }
   }
 }

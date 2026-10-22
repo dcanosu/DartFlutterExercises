@@ -13,9 +13,16 @@ class RootOrSquare implements Exercise {
   @override
   String execute() {
     if (number > 0) {
-      return "Result: ${sqrt(number)}";
+      double result = sqrt(number);
+
+      if (result % 1 == 0) {
+        return "Result: ${result.toInt()}";
+      } else {
+        return "Result: $result";
+      }
     } else if (number < 0) {
-      return "Result: ${number * number}";
+      int square = number * number;
+      return "Result: $square";
     } else {
       return "Result: 0";
     }

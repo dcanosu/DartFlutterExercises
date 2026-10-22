@@ -30,12 +30,13 @@ class FractionDifference implements Exercise {
     double simplifiedNumerator = resultingNumerator / gcd;
     double simplifiedDenominator = commonDenominator / gcd;
 
-    if (simplifiedDenominator == 1) {
+    if (simplifiedDenominator == 1 || simplifiedDenominator == -1) {
       double finalSign = resultingNumerator < 0 ? -1 : 1;
-      return "Result: ${finalSign * simplifiedNumerator.abs()}";
+      int finalNum = (finalSign * simplifiedNumerator.abs()).toInt();
+      return "Result: $finalNum";
     } else {
       String signPrefix = resultingNumerator < 0 ? "-" : "";
-      return "Result: $signPrefix${simplifiedNumerator.abs()}/${simplifiedDenominator.abs()}";
+      return "Result: $signPrefix${simplifiedNumerator.abs().toInt()}/${simplifiedDenominator.abs().toInt()}";
     }
   }
 
